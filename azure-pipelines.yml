@@ -1,0 +1,26 @@
+az aks create --resource-group dev --name dev-env --node-count 1 --enable-addons monitoring --generate-ssh-keys
+
+
+
+trigger:
+- main  # Adjust this to your desired branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployMongoDB
+    displayName: 'Deploy MongoDB to Kubernetes Namespace three-tier'
+    steps:
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        azureSubscription: '<your-azure-service-connection>'
+        azureResourceGroup: '<your-resource-group>'
+        kubernetesCluster: '<your-aks-cluster-name>'
+        namespace: 'three-tier'
+        command: 'apply'
+        arguments: '-f mongodb-deployment.yaml'
+      displayName: 'Deploy MongoDB to Kubernetes'
