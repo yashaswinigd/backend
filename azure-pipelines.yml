@@ -13,9 +13,9 @@ stages:
     - task: Kubernetes@1
       inputs:
         connectionType: 'Kubernetes Service Connection'
-        azureSubscription: '<your-azure-service-connection>'
-        azureResourceGroup: '<your-resource-group>'
-        kubernetesCluster: '<your-aks-cluster-name>'
+        azureSubscription: 'k8sconnection'
+        azureResourceGroup: 'dev-env'
+        kubernetesCluster: 'dev-cluster'
         namespace: 'three-tier'
         command: 'apply'
         arguments: '-f mongodb-deployment.yaml'
