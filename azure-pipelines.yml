@@ -2,7 +2,7 @@ trigger:
 - main  # Adjust this to your desired branch
 
 pool:
-  rollout: 'jump-server'
+  name: 'rollout'
 
 stages:
 - stage: Deploy
