@@ -1,3 +1,6 @@
+trigger:
+- main
+
 pool:
   name: 'rollout'
 
@@ -36,3 +39,17 @@ stages:
         command: 'push'
         tags: |
           backend_$(Build.BuildId)
+
+- stage: PublishImageTag
+  displayName: 'Publish Docker Image Tag'
+  dependsOn: PushDockerImage
+  jobs:
+  - job: publish
+    displayName: 'Publish Docker Image Tag'
+    steps:
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Docker Image Tag'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'docker-image-tag'
+        publishLocation: 'Container'
