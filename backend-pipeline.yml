@@ -42,7 +42,7 @@ stages:
       displayName: 'Push Docker Image'
       inputs:
         containerRegistry: 'perseverance01'
-        repository: 'perseverance-project'
+        repository: 'erseverance01.azurecr.io/perseverance-project'
         command: 'push'
         tags: |
           $(version)
