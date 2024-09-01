@@ -28,7 +28,7 @@ stages:
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: |
-          perseverance01.azurecr.io/perseverance-project:backend_$(Build.BuildId)
+          perseverance01.azurecr.io/perseverance01/perseverance-project:backend_$(Build.BuildId)
       name: buildImage
 
 - stage: PushDockerImage
