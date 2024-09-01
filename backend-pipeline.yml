@@ -23,12 +23,12 @@ stages:
     - task: Docker@2
       displayName: 'Build Docker Image'
       inputs:
-        containerRegistry: 'perseverance01'
+        containerRegistry: 'perseverance01.azurecr.io/perseverance01'
         repository: 'perseverance-project'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: |
-          perseverance01.azurecr.io/perseverance01/perseverance-project:backend_$(Build.BuildId)
+          backend_$(Build.BuildId)
       name: buildImage
 
 - stage: PushDockerImage
