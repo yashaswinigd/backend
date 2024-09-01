@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  name: rollout
+
+stages:
+- stage: BuildAndPushDockerImage
+  displayName: 'Build and Push Docker Image'
+  jobs:
+  - job: buildAndPush
+    displayName: 'Build and Push Docker ApplicationImage to ACR'
+    - task: Docker@2
+      displayName: 'Build and Push Docker Image'
+      inputs:
+        containerRegistry: 'perseverance01'
+        repository: 'perseverance-project'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          backend_$(Build.BuildId)
