@@ -1,16 +1,25 @@
-
 pool:
   name: 'rollout'
- 
+
+variables:
+  version: 'backend_$(Build.BuildId)'
+
 stages:
+- stage: CheckoutCode
+  displayName: 'Checkout Code'
+  jobs:
+  - job: checkout
+    displayName: 'Checkout Code'
+    steps:
+    - checkout: self
+
 - stage: BuildDockerImage
   displayName: 'Build Docker Image'
+  dependsOn: CheckoutCode
   jobs:
   - job: build
     displayName: 'Build Docker Image'
     steps:
-    - checkout: self
-
     - task: Docker@2
       displayName: 'Build Docker Image'
       inputs:
@@ -19,7 +28,7 @@ stages:
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: |
-          backend_$(Build.BuildId)
+          $(version)
       name: buildImage
 
 - stage: PushDockerImage
@@ -36,18 +45,25 @@ stages:
         repository: 'perseverance-project'
         command: 'push'
         tags: |
-          backend_$(Build.BuildId)
+          $(version)
 
-- stage: PublishImageTag
-  displayName: 'Publish Docker Image Tag'
+- stage: ModifyAndPublishYaml
+  displayName: 'Modify and Publish Kubernetes Manifest'
   dependsOn: PushDockerImage
   jobs:
-  - job: publish
-    displayName: 'Publish Docker Image Tag'
+  - job: modifyAndPublish
+    displayName: 'Modify Kubernetes Manifest and Publish'
     steps:
+    - script: |
+        echo "Replacing VERSION with $(version) in k8s/backend.yml.yml"
+        sed -i "s|VERSION|$(version)|g" k8s/backend.yml
+        cat backend.yml
+        cp k8s/deployment.yml $(Build.ArtifactStagingDirectory)/
+      displayName: 'Modify Kubernetes Manifest'
+
     - task: PublishBuildArtifacts@1
-      displayName: 'Publish Docker Image Tag'
+      displayName: 'Publish Modified Kubernetes Manifest'
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-        ArtifactName: 'docker-image-tag'
+        ArtifactName: 'k8s-manifest'
         publishLocation: 'Container'
