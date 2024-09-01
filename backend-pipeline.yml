@@ -1,6 +1,6 @@
 pool:
   name: 'rollout'
-
+  
 variables:
   version: 'backend_$(Build.BuildId)'
 
