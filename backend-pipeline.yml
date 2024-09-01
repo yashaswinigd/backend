@@ -55,7 +55,7 @@ stages:
     displayName: 'Modify Kubernetes Manifest and Publish'
     steps:
     - script: |
-        echo "Replacing VERSION with $(version) in k8s/backend.yml.yml"
+        echo "Replacing VERSION with $(version) in k8s/backend.yml"
         sed -i "s|VERSION|$(version)|g" k8s/backend.yml
         cat backend.yml
         cp k8s/deployment.yml $(Build.ArtifactStagingDirectory)/
