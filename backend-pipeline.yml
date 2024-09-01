@@ -1,7 +1,7 @@
 
 pool:
   name: 'rollout'
-
+ 
 stages:
 - stage: BuildDockerImage
   displayName: 'Build Docker Image'
