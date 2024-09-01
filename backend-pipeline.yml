@@ -46,6 +46,16 @@ stages:
         command: 'push'
         tags: |
           $(version)
+- stage: CleanupDockerImages
+  displayName: 'Clean Up Docker Images'
+  dependsOn: PushDockerImage
+  jobs:
+  - job: cleanup
+    displayName: 'Clean Up Docker Images'
+    steps:
+    - script: |
+        docker rmi -f $(docker images -aq)
+      displayName: 'Remove all Docker images'
 
 - stage: ModifyAndPublishYaml
   displayName: 'Modify and Publish Kubernetes Manifest'
