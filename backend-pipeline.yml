@@ -1,8 +1,5 @@
-trigger:
-- main
-
 pool:
-  name: rollout
+  name: 'rollout'
 
 stages:
 - stage: BuildAndPushDockerImage
