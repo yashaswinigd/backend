@@ -34,18 +34,20 @@ spec:
                 key: password
         ports:
         - containerPort: 3100
+      imagePullSecrets:
+      - name: acr-creds
 ---
- apiVersion: v1
- kind: Service
- metadata:
-   name: backend-service-api
-   namespace: three-tier
- spec:
-   type: NodePort 
-   ports:
-   - port: 8080
-     targetPort: 3100
-     nodePort: 30008
-     protocol: TCP
-   selector:
-     role: backend
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service-api
+  namespace: three-tier
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 3100
+    nodePort: 30008
+    protocol: TCP
+  selector:
+    role: backend
