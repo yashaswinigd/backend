@@ -43,11 +43,10 @@ metadata:
   name: backend-service-api
   namespace: three-tier
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-  - port: 8080
+  - port: 80
     targetPort: 3100
-    nodePort: 30008
     protocol: TCP
   selector:
     role: backend
