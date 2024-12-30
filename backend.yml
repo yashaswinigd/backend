@@ -43,10 +43,10 @@ metadata:
   name: backend-service-api
   namespace: three-tier
 spec:
-  type: NodePort
+  #type: NodePort
   ports:
-  - port: 80
+  - port: 8080
     targetPort: 3100
-    nodePort: 30008
+    #nodePort: 30008
   selector:
     role: backend
